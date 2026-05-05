@@ -40,7 +40,10 @@ if __name__ == "__main__":
             for member in tar.getmembers():
                 member_path = os.path.join(path, member.name)
                 if not is_within_directory(path, member_path):
-                    raise Exception("Attempted Path Traversal in Tar File")
+                    raise tarfile.TarError(
+                        "Attempted path traversal in tar file for member "
+                        f"'{member.name}' with extraction path '{member_path}'"
+                    )
         
             tar.extractall(path, members, numeric_owner=numeric_owner) 
             
